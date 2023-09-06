@@ -1,6 +1,7 @@
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink,} from "reactstrap";
 import { Dogs } from "./Dogs/Dogs"
 import { Application } from "./Application"
+import { Navigation } from "./Navigation"
 
 
 import "./App.css";
@@ -16,15 +17,7 @@ export const Deshawns = () => {
 				<>
 					
 						
-          <Navbar color="light" expand="md">
-          <Nav navbar>
-            <NavbarBrand href="/">🐕‍🦺 🐩 DeShawn's Dog Walking</NavbarBrand>
-            <NavItem>
-              <NavLink href="/walkers">Walkers</NavLink>
-              <NavLink href="/cities">Cities</NavLink>
-            </NavItem>
-          </Nav>
-          </Navbar>
+          <Navigation />
 				  <Application />
 						
 					

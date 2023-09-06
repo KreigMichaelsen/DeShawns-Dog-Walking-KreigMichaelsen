@@ -15,9 +15,6 @@ export const Dogs = ({  }) => {
     const localDogUser = localStorage.getItem("dog_user")
     const dogUserObject = JSON.parse(localDogUser)
 
-    async function fetchData() {
-        
-    }
 
 
     useEffect(
