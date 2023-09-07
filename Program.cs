@@ -207,5 +207,13 @@ if (city == null)
    
 });
 
+app.MapPost("/cities", (City city) =>
+{
+    // creates a new id (When we get to it later, our SQL database will do this for us like JSON Server did!)
+    city.Id = cities.Count > 0 ?cities.Max(st => st.Id) + 1 : 1;
+    cities.Add(city);
+    return city;
+});
+
 
 app.Run();
