@@ -159,6 +159,13 @@ app.MapPost("/dogs", (Dog dog) =>
     return dog;
 });
 
+app.MapDelete("/dogs/{id}", (int id) =>
+{
+    // creates a new id (When we get to it later, our SQL database will do this for us like JSON Server did!)
+    Dog dog = dogs.FirstOrDefault(dog => dog.Id == id);
+    dogs.Remove(dog);
+});
+
 app.MapGet("/walkers", () =>
 {
     

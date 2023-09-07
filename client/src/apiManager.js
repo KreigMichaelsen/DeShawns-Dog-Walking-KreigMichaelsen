@@ -60,3 +60,10 @@ export const postCity = async (city) => {
   return res.json();
 };
 
+export const deleteDog = async (id) => {
+  const res = await fetch(`/dogs/${id}`, {
+    method: "DELETE",
+  });
+  
+};
+
