@@ -151,6 +151,14 @@ app.MapGet("/dogs/{id}", (int id) =>
     return Results.Ok(dog);
 });
 
+app.MapPost("/dogs", (Dog dog) =>
+{
+    // creates a new id (When we get to it later, our SQL database will do this for us like JSON Server did!)
+    dog.Id = dogs.Count > 0 ?dogs.Max(st => st.Id) + 1 : 1;
+    dogs.Add(dog);
+    return dog;
+});
+
 app.MapGet("/walkers", () =>
 {
     

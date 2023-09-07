@@ -56,6 +56,7 @@ export const Dogs = ({  }) => {
    
 
         <article className="dogs" >
+        <button onClick={() => navigate("/dogs/create")}>Add Dog</button>
             {
                 filteredDogs.map(
                     (filteredDog) => <Dog key={`dog--${filteredDog.id}`} 
