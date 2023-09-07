@@ -19,8 +19,7 @@ export const Dogs = ({  }) => {
 
     useEffect(
         () => {
-           getDogs()
-           .then(setDogs)
+            getAllDogs()
         },
         [] 
     ) 
@@ -31,6 +30,11 @@ export const Dogs = ({  }) => {
         },
         [dogs] 
     ) 
+
+    const getAllDogs = () => {
+        getDogs()
+           .then(setDogs)
+    }
 
 
     // useEffect(
@@ -62,6 +66,7 @@ export const Dogs = ({  }) => {
                     (filteredDog) => <Dog key={`dog--${filteredDog.id}`} 
                      currentUser={dogUserObject}
                       dog={filteredDog} 
+                      getAllDogs={getAllDogs}
                      
               
                       />
