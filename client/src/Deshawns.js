@@ -17,8 +17,8 @@ export const Deshawns = () => {
 				<>
 					
 						
-          <Navigation />
-				  <Application />
+          		<Navigation />
+				<Application />
 						
 					
 				</>

@@ -38,3 +38,14 @@ export const getCity = async (id) => {
   return res.json();
 };
 
+export const postCity = async (city) => {
+  const res = await fetch("/cities", {
+    method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(city),
+  });
+  return res.json();
+};
+
