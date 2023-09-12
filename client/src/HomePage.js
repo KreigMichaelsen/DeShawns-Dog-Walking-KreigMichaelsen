@@ -12,7 +12,7 @@ export const HomePage = () => {
 
           <div className="homePageContainer">
             <header className="homePageHeader">
-            <h1 className="homePageWelcome">Dogs!</h1>
+            <h1 className="homePageWelcome">Dogs</h1>
             </header>
             <Dogs  /> 
           </div>

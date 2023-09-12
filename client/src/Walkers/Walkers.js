@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-
 import { Link, useNavigate } from "react-router-dom"
 import { Walker } from "./Walker"
 import { getWalkers, getCities, getFilteredWalkers } from "../apiManager"
@@ -9,7 +8,7 @@ export const Walkers = ({  }) => {
     const [walkers, setWalkers] = useState([])
     const [filteredWalkers, setFilteredWalkers] = useState([])
     const [cities, setCities] = useState([]) 
-    const [selectedCity, setSelectedCity] = useState();
+    const [selectedCity, setSelectedCity] = useState("");
 
     const navigate = useNavigate()
 
@@ -42,13 +41,6 @@ export const Walkers = ({  }) => {
         [] 
     ) 
 
-    useEffect(
-        () => {
-           getCities() 
-           .then(setCities)
-        },
-        [] 
-    ) 
 
     const handleSelectedCity = (id) => {
        
@@ -72,19 +64,10 @@ export const Walkers = ({  }) => {
         }
       };
 
-
-    // useEffect(
-    //     ()=> {
-    //         const searchedShops = coffeeShops.filter(coffeeShop => {
-    //             return coffeeShop.name.toLowerCase().startsWith(searchTermState.toLowerCase())
-    //         })
-    //         setFilteredCoffeeShops(searchedShops)
-    //     },
-    //     [searchTermState]
-    // )
-
-
-
+      const getAllWalkers = () => {
+        getWalkers()
+           .then(setWalkers)
+    }
 
     return <>
 
@@ -110,16 +93,15 @@ export const Walkers = ({  }) => {
         <article className="walkers" >
             <h2>Walkers</h2>
             {
-                filteredWalkers.map(
-                    (filteredWalker) => <Walker key={`walker--${filteredWalker.id}`} 
-                     currentUser={dogUserObject}
-                      walker={filteredWalker} 
-                     
-              
-                      />
-                    
-                )
-            }
+            filteredWalkers.map(filteredWalker => (
+                filteredWalker && <Walker 
+                key={`walker--${filteredWalker.id}`} 
+                currentUser={dogUserObject}
+                walker={filteredWalker} 
+                getAllWalkers={getAllWalkers}
+        />
+            ))
+}
 
         </article>
     </>

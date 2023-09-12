@@ -6,29 +6,29 @@ List <Dog> dogs = new List<Dog>
     {
         Id = 1,
         Name = "Spot",
-        WalkerId = 0,
-        CityId = 0
+        WalkerId = 1,
+        CityId = 1
     },
      new Dog()
     {
         Id = 2,
         Name = "Shadow",
-        WalkerId = 0,
-        CityId = 0
+        WalkerId = 3,
+        CityId = 3
     },
      new Dog()
     {
         Id = 3,
         Name = "Air Bud",
-        WalkerId = 0,
-        CityId = 0
+        WalkerId = 2,
+        CityId = 1
     },
      new Dog()
     {
         Id = 4,
         Name = "Gatsby",
-        WalkerId = 0,
-        CityId = 0
+        WalkerId = 1,
+        CityId = 1
     },
 };
 
@@ -144,6 +144,9 @@ app.MapGet("/dogs", () =>
 app.MapGet("/dogs/{id}", (int id) =>
 {
     Dog dog = dogs.FirstOrDefault(dog => dog.Id == id);
+    dog.Walker = walkers.FirstOrDefault(walker => walker.Id == dog.WalkerId);
+    dog.City = cities.FirstOrDefault(city => city.Id == dog.CityId);
+   
     if (dog == null)
     {
         return Results.NotFound();
@@ -166,10 +169,16 @@ app.MapDelete("/dogs/{id}", (int id) =>
     dogs.Remove(dog);
 });
 
+app.MapGet("/walkerCities", () =>
+{
+   
+    return walkerCities;
+
+});
+
 app.MapGet("/walkers", () =>
 {
-    
-
+   
     return walkers;
 
 });
@@ -177,7 +186,8 @@ app.MapGet("/walkers", () =>
 app.MapGet("/filteredWalkers/{cityId}", (int cityId) =>
 {
     List<WalkerCity> filteredWalkerCities = walkerCities.Where(walkerCity => walkerCity.CityId == cityId).ToList();
-    List<Walker> filteredWalkers = filteredWalkerCities.Select(filteredWalkerCity => walkers.First(walker => walker.Id == filteredWalkerCity.WalkerId)).ToList();
+    List<Walker> filteredWalkers = filteredWalkerCities.Select(filteredWalkerCity => walkers.FirstOrDefault(walker => walker.Id == filteredWalkerCity.WalkerId)).ToList();
+
 
     return filteredWalkers;
 
@@ -188,21 +198,71 @@ app.MapGet("/filteredWalkers/{cityId}", (int cityId) =>
 app.MapGet("/walkers/{id}", (int id) =>
 {
     Walker walker = walkers.FirstOrDefault(walker => walker.Id == id);
-    List<WalkerCity> walkerCitiesForWalker = walkerCities.Where(walkerCity => walkerCity.WalkerId == id).ToList();
-    List<City> citiesForWalker = walkerCitiesForWalker.Select(walkerCity => cities.FirstOrDefault(city => city.Id == walkerCity.CityId)).ToList();
-
-    walker.Cities = citiesForWalker; 
+    List<Dog> dogsForWalkers = dogs.Where(dog => dog.WalkerId == walker.Id).ToList();
+    List<WalkerCity> walkerCitiesForWalkers = walkerCities.Where(walkerCity => walkerCity.WalkerId == walker.Id).ToList();
+    List<City> citiesForWalkers = walkerCitiesForWalkers.Select(walkerCity => cities.FirstOrDefault(city => city.Id == walkerCity.CityId)).ToList();
+    
 
     if (walker == null)
     {
         return Results.NotFound();
     }
+    walker.Cities = citiesForWalkers;
+    walker.Dogs = dogsForWalkers;
     return Results.Ok(walker);
 });
 
-app.MapGet("/cities", () =>
+app.MapDelete("/walkers/{id}", (int id) =>
+{
+    // creates a new id (When we get to it later, our SQL database will do this for us like JSON Server did!)
+    Walker walker = walkers.FirstOrDefault(walker => walker.Id == id);
+    walkerCities =  walkerCities.Where(wc => wc.WalkerId != walker.Id).ToList();
+    walkers.Remove(walker);
+    
+});
+
+app.MapPut("/walkers/{id}/cityEdit", (int id, Walker walker) =>
 {
     
+    walkerCities =  walkerCities.Where(wc => wc.WalkerId != walker.Id).ToList();
+    foreach (City city in walker.Cities)
+    {
+    WalkerCity newWC = new WalkerCity
+    {
+        WalkerId = walker.Id,
+        CityId = city.Id
+    };
+    newWC.Id = walkerCities.Count > 0 ?walkerCities.Max(wc => wc.Id) + 1 : 1;
+    walkerCities.Add(newWC);
+    }
+
+
+    
+    List<Dog> foundDogs = dogs.Where(dogs => dogs.WalkerId == walker.Id).ToList();
+    foreach(Dog dog in foundDogs) 
+    {
+        City matchingCity = walker.Cities.FirstOrDefault(city => city.Id == dog.CityId);
+        if (matchingCity == null)
+        {
+            Dog nonMatchingDog = dogs.First(d => d.Id == dog.Id);
+            nonMatchingDog.WalkerId = null;
+        }
+    }
+ return Results.NoContent();
+   
+});
+
+app.MapPut("/walkers/{id}/dogEdit", (int id, Walker walker) =>
+{
+    
+ return Results.NoContent();
+   
+});
+
+
+app.MapGet("/cities", () =>
+{
+   
     return cities;
 
 });
@@ -210,10 +270,7 @@ app.MapGet("/cities", () =>
 app.MapGet("/cities/{id}", (int id) =>
 {
         City city = cities.FirstOrDefault(city => city.Id == id);
-        List<WalkerCity> walkerCitiesForCity = walkerCities.Where(walkerCity => walkerCity.CityId == id).ToList();
-        List<Walker> walkersForCity = walkerCitiesForCity.Select(walkerCity => walkers.FirstOrDefault(walker => walker.Id == walkerCity.WalkerId)).ToList();
-        city.Walkers = walkersForCity; 
-    
+        
 if (city == null)
     {
         return Results.NotFound();

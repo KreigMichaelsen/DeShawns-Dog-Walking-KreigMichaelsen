@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-
 import { Link, useNavigate } from "react-router-dom"
 import { Dog } from "./Dog"
 import { getDogs } from "../apiManager"
@@ -19,7 +18,8 @@ export const Dogs = ({  }) => {
 
     useEffect(
         () => {
-            getAllDogs()
+            getDogs()
+           .then(setDogs)
         },
         [] 
     ) 
@@ -35,17 +35,6 @@ export const Dogs = ({  }) => {
         getDogs()
            .then(setDogs)
     }
-
-
-    // useEffect(
-    //     ()=> {
-    //         const searchedShops = coffeeShops.filter(coffeeShop => {
-    //             return coffeeShop.name.toLowerCase().startsWith(searchTermState.toLowerCase())
-    //         })
-    //         setFilteredCoffeeShops(searchedShops)
-    //     },
-    //     [searchTermState]
-    // )
 
 
 
@@ -67,6 +56,7 @@ export const Dogs = ({  }) => {
                      currentUser={dogUserObject}
                       dog={filteredDog} 
                       getAllDogs={getAllDogs}
+                 
                      
               
                       />
