@@ -39,6 +39,35 @@ export const getFilteredWalkers = async (cityId) => {
   return res.json();
 };
 
+export const deleteWalker = async (id) => {
+  const res = await fetch(`/walkers/${id}`, {
+    method: "DELETE",
+  });
+  
+};
+
+export const editWalker = async (id, walker) => {
+  return fetch(`/walkers/${id}/cityEdit`, {
+    method: "PUT",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(walker),
+  });
+  
+};
+
+export const addDogsToWalker = async (id, walker) => {
+  return fetch(`/walkers/${id}/dogEdit`, {
+    method: "PUT",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(walker),
+  });
+  
+};
+
 export const getCities = async () => {
   const res = await fetch("/cities");
   return res.json();
@@ -59,6 +88,8 @@ export const postCity = async (city) => {
   });
   return res.json();
 };
+
+
 
 export const deleteDog = async (id) => {
   const res = await fetch(`/dogs/${id}`, {

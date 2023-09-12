@@ -26,7 +26,14 @@ export const DogDetails = () => {
     return <section className="dogDetailsContainer">
     
     <h1 className="dogShopDetailsHeader">{dog.name}</h1>
-    <h2> Current Walker: </h2>
+    <h3>Current Walker </h3>
+    <ul>
+        {dog?.walker?.name}
+    </ul>
+    <h3>Current City</h3>
+    <ul>
+        {dog?.city?.name}
+    </ul>
 
     
     </section>

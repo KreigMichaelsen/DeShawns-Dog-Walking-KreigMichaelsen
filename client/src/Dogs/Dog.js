@@ -16,7 +16,8 @@ export const Dog = ({dog, currentUser, getAllDogs }) => {
  
     return <section className="dog">
 
-    <h3 onClick={() => navigate(`/dogs/${dog.id}`)}>{dog.id}. {dog.name}</h3>
+    <h3 onClick={() => navigate(`/dogs/${dog.id}`)}>{dog.id}. {dog.name} </h3>
+    
     <form onSubmit={handleSubmit}>
      <button type="submit" className="btn btn-primary">
             Remove</button>
